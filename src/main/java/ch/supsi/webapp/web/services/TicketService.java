@@ -5,6 +5,8 @@ import ch.supsi.webapp.web.repository.TicketRepository;
 import ch.supsi.webapp.web.repository.TicketWatchingRepository;
 import ch.supsi.webapp.web.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
+import jakarta.persistence.Transient;
+import jakarta.transaction.Transactional;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -111,13 +113,19 @@ public class TicketService
         return !ticketRepository.existsById(id);
     }
 
-    public boolean delete2(int id, String username)
+    @Transactional
+    public boolean delete2(int id)
     {
-        List<TicketWatched> tickets = watchedRepository.findAll();
-        TicketWatched toDelete =  tickets.stream().filter(ticket -> ticket.getTicket().getId()==id && ticket.getUser().getUsername().compareToIgnoreCase(username)==0).findFirst().orElse(null);
-        if(toDelete==null)  return false;
-        watchedRepository.deleteById(toDelete.getId());
-        return !watchedRepository.existsById(toDelete.getId());
+        Ticket toDelete = get(id);
+        System.out.println(toDelete);
+        if(toDelete==null)      return false;
+        watchedRepository.deleteAllByTicket(toDelete);
+        return true;
+    }
+
+    public List<TicketWatched> getAllTicketWatched()
+    {
+        return watchedRepository.findAll();
     }
 
     public List<User> getUsers()

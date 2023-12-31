@@ -148,11 +148,13 @@ public class MainController
 
     }
 
+    /*
+        The problem in deleting the ticke carise when the ticket is being watched by another user thet is non the current one
+     */
     @GetMapping(value = "/ticket/{id}/delete")
-    public String delete(@PathVariable int id){
-
-        User currentUser = service.getAuthenticatedUser();
-        service.delete2(id, currentUser.getUsername());
+    public String delete(@PathVariable int id)
+    {
+        service.delete2(id);
         service.delete(id);
         return "redirect:/";
     }

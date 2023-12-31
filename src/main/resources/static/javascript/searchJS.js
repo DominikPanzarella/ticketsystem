@@ -25,7 +25,7 @@ function searchFunction()
             updateTicketList(data);
         })
         .catch(error => {
-            console.error("Error fetching data: ",error.message());
+            console.error("Error fetching data: ",error.message);
         })
 
 }
@@ -33,6 +33,7 @@ function searchFunction()
 function updateTicketList(tickets) {
     const container = document.querySelector("#content_container");
     const count = document.getElementById("count");
+    let articles = "";
     for(var i=0; i< tickets.length; i++){
         const date = new Date(tickets[i].date);
         const dateFormatted =  formatDate(tickets[i].creationDate)

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html  lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+       th:fragment="layout(title,metas,navigation,content,footer)">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Dominik Panzarella">
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <base th:href="@{/}" />
+        <th:block th:replace="${metas}" />
+        <title th:replace="${title}">Layout Title</title>
+
+        <style>
+            body {
+                font-family: 'Varela Round', sans-serif;
+            }
+
+            .navbar .navbar-brand {
+                padding-left: 0;
+                font-size: 20px;
+                padding-right: 50px;
+            }
+            .navbar .navbar-brand b {
+                color: #33cabb;
+            }
+            .navbar a {
+                color: whitesmoke;
+                font-size: 15px;
+            }
+
+            .navbar .sign-up-btn {
+                min-width: 110px;
+                max-height: 36px;
+            }
+
+            .navbar a, .navbar a:active {
+                color: white;
+                padding: 8px 20px;
+                background: transparent;
+                line-height: normal;
+            }
+
+            .dropdown-menu a , .dropdown-menu a:active
+            {
+                color:black;
+            }
+
+            .navbar .btn-primary, .navbar .btn-primary:active {
+                color: #fff;
+                background: #33cabb !important;
+                border: none;
+            }
+            .navbar .btn-primary:hover, .navbar .btn-primary:focus, .input-group .input-group-append button{
+                color: #fff;
+                background: #31bfb1 !important;
+            }
+
+            @media (max-width: 768px){
+                .navbar .dropdown-menu{
+                    width: 100%;
+                    padding: 10px 15px;
+                    background: transparent;
+                    border: none;
+                }
+            }
+
+        </style>
+
+    </head>
+
+    <body class="min-vh-100">
+
+    <th:block th:replace="${navigation}">
+        <header class="navbar navbar-expand-lg navbar-dark bg-primary px-2" role="navigation" aria-label="Main Navigation">
+            <a th:href="@{/}" class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" role="link" aria-label="Home" style="font-size: large">Ticket<b style="font-size: larger">Mate</b></a>
+            <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <input class="form-control form-control-dark w-100 rounded-0 border-0" type="text" placeholder="Search" aria-label="Search" name="q" id="searchInput" role="searchbox">
+            <script th:src="@{/javascript/searchJS.js}"></script>
+            <div class="navbar-nav" sec:authorize="isAuthenticated()">
+                <div class="nav-item text-nowrap">
+                    <a class="nav-link px-3" th:href="@{/logout}" aria-label="Sign Out">Sign out</a>
+                </div>
+            </div>
+            <div class="navbar-nav" sec:authorize="!isAuthenticated()">
+                <div class="nav-item text-nowrap">
+                    <a class="nav-link px-3" th:href="@{/login}" aria-label="Sign In">Sign in</a>
+                </div>
+            </div>
+        </header>
+
+
+    </th:block>
+
+    <div class="container-fluid">
+        <div class="row" role="region" aria-label="Main Content Section">
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="position-sticky pt-3 sidebar-sticky">
+                    <p sec:authorize="isAuthenticated()" class="px-2"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-person-check" viewBox="0 0 16 16">
+                        <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m1.679-4.493-1.335 2.226a.75.75 0 0 1-1.174.144l-.774-.773a.5.5 0 0 1 .708-.708l.547.548 1.17-1.951a.5.5 0 1 1 .858.514ZM11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4"/>
+                        <path d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1z"/>
+                    </svg>  Welcome <b th:text="${#authentication.name}" style="font-size: larger; color: dodgerblue">user</b></p>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a th:href="@{/}" class="nav-item nav-link" role="menuitem" aria-label="Home"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-ticket-detailed" viewBox="0 0 16 16">
+                                <path d="M4 5.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5M5 7a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2z"/>
+                                <path d="M0 4.5A1.5 1.5 0 0 1 1.5 3h13A1.5 1.5 0 0 1 16 4.5V6a.5.5 0 0 1-.5.5 1.5 1.5 0 0 0 0 3 .5.5 0 0 1 .5.5v1.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 11.5V10a.5.5 0 0 1 .5-.5 1.5 1.5 0 1 0 0-3A.5.5 0 0 1 0 6zM1.5 4a.5.5 0 0 0-.5.5v1.05a2.5 2.5 0 0 1 0 4.9v1.05a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-1.05a2.5 2.5 0 0 1 0-4.9V4.5a.5.5 0 0 0-.5-.5z"/>
+                            </svg>  Tickets</a>
+                            <a th:href="@{/ticket/new}" class="nav-item nav-link" role="menuitem" aria-label="Create"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0"/>
+                            </svg>  New Ticket</a>
+                            <a th:href="@{/ticket/board}" class="nav-item nav-link" role="menuitem" aria-label="Create"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window-split" viewBox="0 0 16 16">
+                                <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1m2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0m1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1"/>
+                                <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v2H1V3a1 1 0 0 1 1-1zM1 13V6h6.5v8H2a1 1 0 0 1-1-1m7.5 1V6H15v7a1 1 0 0 1-1 1z"/>
+                            </svg>  Board Ticket</a>
+                            <a sec:authorize="isAuthenticated()" th:href="@{/ticket/watch}" class="nav-item nav-link" role="menuitem" aria-label="Watching"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-stopwatch" viewBox="0 0 16 16">
+                                <path d="M8.5 5.6a.5.5 0 1 0-1 0v2.9h-3a.5.5 0 0 0 0 1H8a.5.5 0 0 0 .5-.5z"/>
+                                <path d="M6.5 1A.5.5 0 0 1 7 .5h2a.5.5 0 0 1 0 1v.57c1.36.196 2.594.78 3.584 1.64a.715.715 0 0 1 .012-.013l.354-.354-.354-.353a.5.5 0 0 1 .707-.708l1.414 1.415a.5.5 0 1 1-.707.707l-.353-.354-.354.354a.512.512 0 0 1-.013.012A7 7 0 1 1 7 2.071V1.5a.5.5 0 0 1-.5-.5M8 3a6 6 0 1 0 .001 12A6 6 0 0 0 8 3"/>
+                            </svg> <span id="count">0</span> Watching</a>
+                            <script th:src="@{/javascript/updateWatchingCount.js}"></script>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 min-vh-100" id="content_container" role="main" aria-label="Main Content Area">
+                <th:block th:insert="${content}"></th:block>
+            </main>
+
+        </div>
+    </div>
+
+
+
+    <th:block th:replace="${footer}">
+        <footer class="p-4 bg-primary text-center text-white" role="contentinfo" aria-label="Page Footer">
+            <div class="container">
+                <section class="d-flex justify-content-center">
+                    <p>&copy; Dominik Panzarella</p>
+                </section>
+            </div>
+
+        </footer>
+    </th:block>
+
+
+    </body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:replace="~{master :: layout(~{::title},_,_, ~{::main/content()}, _)}">
+<head>
+  <meta charset="UTF-8">
+  <title>Board</title>
+  <link th:href="@{/CSS/ticketStyle.css}" type="text/css" rel="stylesheet">
+  <link th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}" rel="stylesheet">
+  <style>
+    .main {
+      background-color: #fff;
+      padding: 20px;
+      margin: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Center horizontally */
+      justify-content: center; /* Center vertically */
+      text-align: center; /* Center text inside main */
+    }
+  </style>
+</head>
+<body class="min-vh-100">
+<main>
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <nav class="h2">
+      <span class="notactive">Board</span>
+    </nav>
+    <hr role="separator">
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-3 card p-0">
+        <div class="card-header">
+          OPEN
+        </div>
+          <article class="col-sm-9 p-1 m-1 align-items-center align-content-center" th:each="ticket : ${tickets_open}" role="listitem" aria-label="Ticket Item">
+            <div class="card mb-3" th:fragment="cc">
+              <div class="card-body">
+                <strong><span class="card-title" th:text="${ticket.title}">Ticket title</span></strong>
+                <hr>
+                <p class="card-assignee">Assignee: <span th:text="${ticket.assignee.username}">Ticket Assignee</span></p>
+                <p class="card-title">Type: <span th:text="${ticket.type}">Ticket type</span></p>
+                <a class="btn btn-outline-info" th:if="${ticket.isTimeSpentSet()}==false" th:href="@{'/ticket/'+${ticket.id}+'/setTimeSpent'}">Set Time Spent</a>
+              </div>
+            </div>
+          </article>
+
+      </div>
+      <div class="col-sm-3 card p-0">
+        <div class="card-header">
+          IN PROGRESS
+        </div>
+        <article class="col-sm-9 p-1 m-1 align-items-center align-content-center" th:each="ticket : ${tickets_inp}" role="listitem" aria-label="Ticket Item">
+          <div th:replace="~{:: cc}">
+          </div>
+        </article>
+      </div>
+      <div class="col-sm-3 card p-0">
+        <div class="card-header">
+          DONE
+        </div>
+        <article class="col-sm-9 p-1 m-1 align-items-center align-content-center" th:each="ticket : ${tickets_done}" role="listitem" aria-label="Ticket Item">
+          <div th:replace="~{:: cc}">
+          </div>
+        </article>
+      </div>
+      <div class="col-sm-3 card p-0">
+        <div class="card-header">
+          SUMMARY DETAILS
+        </div>
+        <div class="card-body">
+          <p>OPEN : <span id="number_open">0</span></p>
+          <hr>
+          <p>IN_PROGRESS : <span id="number_inp">0</span></p>
+          <hr>
+          <p>DONE : <span id="number_done">0</span></p>
+          <hr>
+          <div class="card-time-spent" id="card-time-spent">
+
+          </div>
+        </div>
+        <script th:src="@{/javascript/updateSummaryDetails.js}"></script>
+        <script th:src="@{/javascript/updateProgressBar.js}"></script>
+
+      </div>
+    </div>
+  </div>
+</main>
+
+
+
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:replace="~{master :: layout(_,_,_, ~{::main/content()}, _)}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:href="@{/CSS/ticketStyle.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}" rel="stylesheet">
+    <style>
+        .main {
+            background-color: #fff;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center horizontally */
+            justify-content: center; /* Center vertically */
+            text-align: center; /* Center text inside main */
+        }
+    </style>
+</head>
+<body class="min-vh-100">
+<main class="min-vh-100">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" role="banner" aria-label="Page Banner">
+        <nav class="h2">
+            <span class="notactive"><a th:href="@{/}" aria-label="Navigate to Tickets">Tickets</a> /</span>
+            <span th:text="${ticket.title}" aria-label="Ticket Title">title</span></nav>
+    </div>
+    <div>
+        <section class="row" th:fragment="" role="region" aria-label="Ticket Details">
+            <article class="col-md-12">
+                <a class="btn btn-sm btn-outline-secondary" th:href="@{'/ticket/'+${ticket.id}+'/edit'}" aria-label="Edit Ticket"><span class="bi bi-pencil"></span> Edit</a>
+                <a class="btn btn-sm btn-outline-danger" th:href="@{'/ticket/'+${ticket.id}+'/delete'}" aria-label="Delete Ticket"><span class="bi bi-trash"></span> Delete</a>
+                <a class="btn btn-sm btn-outline-info" id="watch-button" sec:authorize="isAuthenticated()" aria-label="Watch Ticket"><span class="bi bi-trash">Watch</span></a>
+                <a class="btn btn-sm btn btn-outline-warning" th:href="@{'/ticket/'+${ticket.id}+'/setTimeSpent'}" id="timespent-button" sec:authorize="isAuthenticated()" aria-label="Watch Ticket"><span class="bi bi-trash">Set Time</span></a>
+                <script th:src="@{/javascript/checkWatchingTicket.js}"></script>
+                <script th:src="@{/javascript/addWatchTicket.js}"></script>
+
+                <hr>
+                <h4 class="pt-3" aria-label="Details">Details</h4>
+                <hr>
+                <div class="row">
+                    <div class="col-6 col-md-5">
+                        Type: <strong th:text="${ticket.type}" aria-label="Ticket Type">bug</strong>
+                    </div>
+                    <div class="col-6 col-md-5">
+                        Status: <span class="badge bg-primary detail-status" th:text="${ticket.status}" aria-label="Ticket Status">open</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6 col-md-5">
+                        Created: <span th:text="${#dates.format(ticket.creationDate, 'dd/MM/yyyy @ HH:mm')}" aria-label="Ticket Creation Date">January 1, 2014</span>
+                    </div>
+                    <div class="col-6 col-md-5">
+                        Owner: <a href="#" th:text="${ticket.user.username}" aria-label="Ticket Owner">Mark</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6 col-md-5">
+                        Due Date: <span th:text="${#dates.format(ticket.due_date, 'dd/MM/yyyy @ HH:mm')}" aria-label="Ticket Due Date">January 1, 2014</span>
+                    </div>
+                    <div class="col-6 col-md-5">
+                        Time Estimated: <span href="#" th:text="${ticket.estimate}" aria-label="Ticket Time Estimated">Mark</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6 col-md-5">
+                        Time Spent: <span href="#" th:text="${ticket.time_spent}" aria-label="Ticket Time Estimated">Mark</span>
+                    </div>
+                    <div class="col-6 col-md-5">
+                        Assignee: <span href="#" th:text="${ticket.assignee.username}" aria-label="Ticket Assignee">Mark</span>
+                    </div>
+                </div>
+                <h4 class="pt-3" aria-label="Description">Description</h4>
+                <hr>
+                <p th:text="${ticket.description}" class="detail-description" aria-label="Ticket Description">Description ticket</p>
+                <h4 class="pt-3" aria-label="Attachment">Attachment</h4>
+                <hr>
+                <p th:if="${ticket.attachment == null}" aria-label="No Attachment Message">There's no attachment for this ticket</p>
+                <p th:if="${ticket.attachment != null}">
+                    <a th:href="@{'/ticket/'+${ticket.id}+'/attachment'}" target="_blank" th:text="${ticket.attachment.name}" aria-label="Attachment Name"></a> (
+                    <span th:text="${ticket.attachment.contentType}" aria-label="Attachment Type"></span>) <span th:text="${ticket.attachment.readeableSize}" aria-label="Attachment Size"></span>
+                </p>
+            </article>
+        </section>
+    </div>
+</main>
+
+
+</body>
+</html>
